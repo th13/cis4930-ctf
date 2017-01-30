@@ -10,6 +10,8 @@
 # TODO: Seems like 50% of the time, the evaluated expression gives the wrong result.
 # Not a huge problem because it works after a few runs and retrieves the flag,
 # but it's weird.
+# Also, why I didn't use BeautifulSoup or something to do the parsing I will never
+# understand.
 
 import requests
 import math
@@ -18,8 +20,6 @@ pg = requests.get("http://ctf.hackucf.org:4000/calc/calc.php")
 expr = pg.text[253:]
 
 cookie = pg.headers["Set-Cookie"]
-
-# print cookie
 
 i = 1
 j = 3

