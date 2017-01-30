@@ -1,0 +1,1 @@
+b'<?php\n\ndie("Nice trY. We st0r3d the fl4g as a variable in th1s f1le, s0 LFI w0nt w0rk un13ss pHp can l0ad 1t d1FF3r3ntly.<br><br>Th3 4m0un7 0f b1tc0in y0u mu5t p4y h4z d0ubl3d.");\n\n$flag = "flag{y0u_d1dn7_s4y_th3_m4g1q_w0rd}";\n\n?>\n'

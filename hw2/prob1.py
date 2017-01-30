@@ -1,0 +1,7 @@
+import base64
+
+b64page = """
+PD9waHAKCmRpZSgiTmljZSB0clkuIFdlIHN0MHIzZCB0aGUgZmw0ZyBhcyBhIHZhcmlhYmxlIGluIHRoMXMgZjFsZSwgczAgTEZJIHcwbnQgdzByayB1bjEzc3MgcEhwIGNhbiBsMGFkIDF0IGQxRkYzcjNudGx5Ljxicj48YnI+VGgzIDRtMHVuNyAwZiBiMXRjMGluIHkwdSBtdTV0IHA0eSBoNHogZDB1YmwzZC4iKTsKCiRmbGFnID0gImZsYWd7eTB1X2QxZG43X3M0eV90aDNfbTRnMXFfdzByZH0iOwoKPz4K
+"""
+
+print(base64.b64decode(b64page))
