@@ -1,0 +1,11 @@
+pat:
+Set breakpoint at faulty comparison (then it will execute flag function).
+
+Flag: flag{w3l0m3_t0_r3}
+
+
+segf:
+Set breakpoint on segf.
+
+jmper:
+Find jump address, find function start, jump to function.
