@@ -290,4 +290,5 @@ Problem 2:
     1. The audio file has a large section with nothing playing.
     2. The very end has a quick "static" sound before ending the playback.
 
-17. We open the file in Audacity to analyze it.
+17. We open the file in Audacity to analyze it. It looks like there is some sort of morse code
+    hidden in the very end of the file.
