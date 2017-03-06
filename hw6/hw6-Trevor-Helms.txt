@@ -1,0 +1,293 @@
+Homework #6
+Trevor Helms <th13>
+
+Problem 1:
+================================================================================
+
+1. Download "count.txt" from the course website.
+
+2. Running file on "count.txt" reveals that it is a tar archive.
+
+    count.txt: POSIX tar archive (GNU)
+
+3. Unzip count.txt using tar.
+
+    > $ tar xvf count.txt                                              [±master ●●]
+    thelady.xml
+    taunts.txt
+
+4. Run file on both of these.
+
+    > $ file taunts.txt thelady.xml                                    [±master ●●]
+    taunts.txt:  ASCII text, with very long lines
+    thelady.xml: data
+
+5. We see taunts.txt is an ASCII text file, so we open it and see there is a magic number
+   hidden in it.
+
+    > $ cat taunts.txt                                                 [±master ●●]
+    Did you really expect to find the flag without knowing my MAGIC number?
+    ...
+    magic=0xAD1312
+    ...
+
+6. Then we look at thelady.xml. It is not valid XML, and appears to be just a random
+   binary file. We use the magic number found in taunts.txt and, using an XOR, we decrypt
+   thelady.xml by xor'ing each sequence of 3 bytes by the corresponding byte array from
+   the magic number.
+
+7. We then notice the file resembles a base64 string. We can then decode the file using
+   a base 64 decoder.
+
+(The Python code for steps 6 and 7 follows.)
+
+    # solver.py
+    # magic=0xAD1312
+    key = bytearray([0xAD, 0x13, 0x12])
+
+    newfile = open("xord", "wb")
+    arr = []
+
+    with open("thelady.xml", "rb") as f:
+    i = 0
+    fb = bytearray(f.read())
+
+    for byte in fb:
+    arr.append(byte ^ key[i])
+    i += 1
+    if i > 2:
+    i = 0
+
+    newfile.write(bytearray(arr))
+    newfile.close()
+
+    fi = open("xord", "r")
+    d = open("decoded", "w")
+    decoded = fi.read().decode("base64")
+
+    d.write(decoded)
+
+8. We then run file on the decoded file.
+
+    > $ file decoded                                              [±master ●●]
+    decoded: Zip archive data, at least v2.0 to extract
+
+9. Now we unzip it.
+
+    > $ unzip decoded                                                  [±master ●●]
+    Archive:  decoded
+       creating: docProps/
+      inflating: docProps/app.xml
+      inflating: docProps/core.xml
+       creating: word/
+      inflating: word/document.xml
+      inflating: word/fontTable.xml
+       creating: word/media/
+      inflating: word/media/image1.jpg
+     extracting: word/media/image2.jpg
+      inflating: word/media/image3.jpg
+      inflating: word/settings.xml
+      inflating: word/styles.xml
+       creating: word/theme/
+      inflating: word/theme/theme1.xml
+      inflating: word/webSettings.xml
+       creating: word/_rels/
+      inflating: word/_rels/document.xml.rels
+      inflating: [Content_Types].xml
+       creating: _rels/
+      inflating: _rels/.rels
+
+10. This looks like a Word document. Exploring into the word/ directory, we notice 3 image files.
+
+    trevor@TeamAwesome ~/cis4930-ctf/hw6/prob1/word/media                [18:06:40]
+    > $ ls                                                             [±master ●●]
+    image1.jpg  image2.jpg  image3.jpg
+
+11. Image 1 is a working image. Image 2 appears broken (as a JPG), and Image 3 is a QR code.
+
+12. We decode the QR code using any online decoder. We get the string "vonOrmstein" from it.
+
+13. Next we explore image 3. Running file, we see it is a 7-zip archive.
+
+    > $ file image2.jpg                                                [±master ●●]
+    image2.jpg: 7-zip archive data, version 0.3
+
+14. We extract it using 7-zip. We are prompted for a password, so we supply the string we
+    we got from decoding the QR code.
+
+    > $ 7z e image2.jpg                                                [±master ●●]
+
+    7-Zip [64] 9.20  Copyright (c) 1999-2010 Igor Pavlov  2010-11-18
+    p7zip Version 9.20 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,4 CPUs)
+
+    Processing archive: image2.jpg
+
+
+    Enter password (will not be echoed) :
+    Extracting  CharlesBridge-Prague.jpg
+
+    Everything is Ok
+
+    Size:       7495124
+    Compressed: 7169676
+
+15. We get the file CharlesBridge-Prague.jpg. Opening it, we get the flag.
+
+*** FLAG ***
+Flag{SC4ND4L_S34S0n_8_L1V3_Fr0M_B0H3in8a}
+
+
+
+Problem 2:
+================================================================================
+
+1. We download "fore101" from the course website.
+
+2. Running file on it, we see it is bzip archive.
+
+    > $ file ~/Downloads/fore101                                       [±master ●●]
+    /home/trevor/Downloads/fore101: bzip2 compressed data, block size = 900k
+
+3. We extract the archive.
+
+    > $ bunzip2 fore101                                                [±master ●●]
+    bunzip2: Can't guess original name for fore101 -- using fore101.out
+
+4. We run file on fore101.out and see it is a tar archive. We then extract it.
+
+    > $ tar xvf fore101.out                                            [±master ●●]
+    data
+
+5. We get a file called data. file shows us it is a DOS/MBR boot sector.
+
+    > $ file data                                                      [±master ●●]
+    data: DOS/MBR boot sector, code offset 0x3c+2, OEM-ID "mkfs.fat", sectors/cluster 4, root entries 512, sectors 10240 (volumes <=32 MB) , Media descriptor 0xf8, sectors/FAT 8, sectors/track 32, heads 64, serial number 0x50963a28, unlabeled, FAT (12 bit)
+
+6. We use fls from the sleuthkit to see the filesystem structure.
+
+    > $ fls data                                                       [±master ●●]
+    r/r 5:	nothing_is_as_it_seems.zip
+    r/r 7:	cool
+    r/r 9:	cool1
+    ..............
+    r/r 207:	cool100
+    v/v 163571:	$MBR
+    v/v 163572:	$FAT1
+    v/v 163573:	$FAT2
+    d/d 163574:	$OrphanFiles
+
+7. The zip file looks interesting. We can retrieve it from the boot sector using
+   tsk_recover.
+
+   > $ tsk_recover -e data .                                          [±master ●●]
+   Files Recovered: 1
+
+8. We then run file to ensure it is a zip file. We discover that it registers as just
+   data, so there must be something else to it.
+
+   > $ file nothing_is_as_it_seems.zip                                [±master ●●]
+   nothing_is_as_it_seems.zip: data
+
+9. A simple hexdump reveals the zip archive has a broken header. We fix it by replacing the
+   header to begin with "PK\03\04".
+
+   OLD:
+
+   > $ xxd nothing_is_as_it_seems.zip | more                               [±master ●●]
+    00000000: 2e5a 4950 0304 1400 0000 0800 0467 564a  .ZIP.........gVJ
+    00000010: 05c6 3999 e742 3b00 f5fd 4400 1400 1c00  ..9..B;...D.....
+    00000020: 6447 686c 5a6d 7868 5a32 6c7a 6147 5679  dGhlZmxhZ2lzaGVy
+    00000030: 5a51 3d3d 5554 0900 03b7 d0ad 58dd d1ad  ZQ==UT......X...
+    00000040: 5875 780b 0001 04e8 0300 0004 e803 0000  Xux.............
+    00000050: 4c5d 0940 cd69 d77f eeed d22d c96d 6142  L].@.i.....-.maB
+    00000060: b86d 1499 2935 1431 b74d 8bad 8db2 8d28  .m..)5.1.M.....(
+    ...
+
+    NEW:
+    > $ xxd fixed.zip | more                                                [±master ●●]
+    00000000: 504b 0304 1400 0000 0800 0467 564a 05c6  PK.........gVJ..
+    00000010: 3999 e742 3b00 f5fd 4400 1400 1c00 6447  9..B;...D.....dG
+    00000020: 686c 5a6d 7868 5a32 6c7a 6147 5679 5a51  hlZmxhZ2lzaGVyZQ
+    00000030: 3d3d 5554 0900 03b7 d0ad 58dd d1ad 5875  ==UT......X...Xu
+    00000040: 780b 0001 04e8 0300 0004 e803 0000 4c5d  x.............L]
+    00000050: 0940 cd69 d77f eeed d22d c96d 6142 b86d  .@.i.....-.maB.m
+    ....
+
+10. We then extract the zip.
+
+    > $ unzip fixed.zip                                                     [±master ●●]
+    Archive:  fixed.zip
+      inflating: dGhlZmxhZ2lzaGVyZQ==
+
+11. The extracted file name looks like base64. Decoding it, we get the string "theflagishere".
+
+    Python shell:
+    >>> "dGhlZmxhZ2lzaGVyZQ==".decode("base64")
+    'theflagishere'
+
+12. File shows us this file is not recognized.
+
+    > $ file dGhlZmxhZ2lzaGVyZQ==                                           [±master ●●]
+    dGhlZmxhZ2lzaGVyZQ==: data
+
+13. However, a hex dump shows us this may be a Flac audio file.
+
+    > $ xxd dGhlZmxhZ2lzaGVyZQ==| more                                      [±master ●●]
+    00000000: 5245 4441 4354 4544 1000 1000 0002 c200  REDACTED........
+    00000010: 17c1 0ac4 40f0 0048 524c 2bb6 33fd e630  ....@..HRL+.3..0
+    00000020: e018 04e2 18ed f9a9 2274 8400 0028 2000  ........"t...( .
+    00000030: 0000 7265 6665 7265 6e63 6520 6c69 6246  ..reference libF
+    00000040: 4c41 4320 312e 332e 3120 3230 3134 3131  LAC 1.3.1 201411
+    00000050: 3235 0000 0000 fff8 c908 0095 12ff 000d  25..............
+    00000060: 6082 0800 0020 8208 66a6 ebee a668 e6a6  `.... ..f....h..
+    00000070: ebee aeca 6686 1000 0921 8648 e48e 6a6c  ....f....!.H..jl
+
+14. We need to fix the header by adding the flac magic number and fixing the metadata section.
+    For this part, I had to do some research on the Flac file format. The resulting fixed header is
+    as follows.
+
+    > $ xxd theflagishere.flac| more                                        [±master ●●]
+    00000000: 664c 6143 0000 0022 1000 1000 0002 c200  fLaC..."........
+    00000010: 17c1 0ac4 40f0 0048 524c 2bb6 33fd e630  ....@..HRL+.3..0
+    00000020: e018 04e2 18ed f9a9 2274 8400 0028 2000  ........"t...( .
+    00000030: 0000 7265 6665 7265 6e63 6520 6c69 6246  ..reference libF
+    00000040: 4c41 4320 312e 332e 3120 3230 3134 3131  LAC 1.3.1 201411
+    00000050: 3235 0000 0000 fff8 c908 0095 12ff 000d  25..............
+    00000060: 6082 0800 0020 8208 66a6 ebee a668 e6a6  `.... ..f....h..
+    00000070: ebee aeca 6686 1000 0921 8648 e48e 6a6c  ....f....!.H..jl
+    ......
+
+  a. File shows us this is a valid Flac file.
+
+      > $ file theflagishere.flac                                             [±master ●●]
+      theflagishere.flac: FLAC audio bitstream data, 16 bit, mono, 44.1 kHz, 4739660 samples
+
+15. Now, we try to see if any information is hidden in the metadata. The metadata is as follows.
+
+    > $ metaflac --list theflagishere.flac                                  [±master ●●]
+    METADATA block #0
+      type: 0 (STREAMINFO)
+      is last: false
+      length: 34
+      minimum blocksize: 4096 samples
+      maximum blocksize: 4096 samples
+      minimum framesize: 706 bytes
+      maximum framesize: 6081 bytes
+      sample_rate: 44100 Hz
+      channels: 1
+      bits-per-sample: 16
+      total samples: 4739660
+      MD5 signature: 2bb633fde630e01804e218edf9a92274
+    METADATA block #1
+      type: 4 (VORBIS_COMMENT)
+      is last: true
+      length: 40
+      vendor string: reference libFLAC 1.3.1 20141125
+      comments: 0
+
+16. The metadata revealed little in the way of a flag. However, playing the audio we notice 2 things:
+
+    1. The audio file has a large section with nothing playing.
+    2. The very end has a quick "static" sound before ending the playback.
+
+17. We open the file in Audacity to analyze it.
